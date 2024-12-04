@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    
+</head>
+<body>
+
+    <h1>Ejemplo WebPay</h1>
+
+    <div>
+       Realizando Pago.......
+
+       <form name="form" th:action="${response.getUrl()}" method="post">
+            <input type="hidden" name="token_ws" th:value="${response.getToken()}"/>
+            <!--<button type="submit">Enviar</button>-->
+       </form>
+    </div>
+
+    
+    <script type="text/javascript">
+        window.onload=function(){
+            document.form.submit();
+        }
+    </script>
+    
+    
+</body>
+</html>

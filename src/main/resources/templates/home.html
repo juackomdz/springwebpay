@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    
+</head>
+<body>
+
+    <h1>Ejemplo WebPay</h1>
+
+    <div>
+        <ul>
+            <li><strong>Producto</strong> Mesa</li>
+            <li><strong>Valor</strong> $12000</li>
+            <li><strong>Cantidad</strong> 1</li>
+            <li><strong>Orden de compra</strong> 34345</li>
+        </ul>
+            <a th:href="@{/pagar}">Pagar</a>
+    </div>
+</body>
+</html>
