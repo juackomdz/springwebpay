@@ -1,7 +1,10 @@
 package cl.spring.webpay.springwebpay.model;
 
-public class RequestModel {
+import java.io.Serializable;
 
+public class RequestModel implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     private String buy_order;
     private String session_id;
     private Integer amount;

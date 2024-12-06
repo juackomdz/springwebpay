@@ -11,7 +11,16 @@
     <h1>Respuesta Pago</h1>
 
     <div>
-       
+       <ul>
+            <li>vci: <span th:text="${respuesta.getVci}"></span></li>
+            <li>monto: <span th:text="${respuesta.getAmount}"></span></li>
+            <li>estado: <span th:text="${respuesta.getStatus}"></span></li>
+            <li>orden de compra: <span th:text="${respuesta.getBuy_order}"></span></li>
+            <li>codigo de autorizacion: <span th:text="${respuesta.getAuthorization_code}"></span></li>
+
+            <li></li>
+            <li></li>
+       </ul>
     </div>
 </body>
 </html>
