@@ -10,11 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import cl.spring.webpay.springwebpay.Utilidades.Constantes;
 import cl.spring.webpay.springwebpay.model.CrearTokenModel;
 import cl.spring.webpay.springwebpay.model.RequestModel;
 import cl.spring.webpay.springwebpay.model.ResponseModel;
+import reactor.core.publisher.Mono;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -30,6 +32,7 @@ public class HomeController {
     
     @GetMapping("pagar")
     public String pagar(Model model) {
+        /* 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders(); 
 
@@ -44,7 +47,22 @@ public class HomeController {
 
         ResponseEntity<CrearTokenModel> response = restTemplate.postForEntity(Constantes.WEBPAY_URL, request, CrearTokenModel.class);
 
-        model.addAttribute("response", response.getBody());
+        */
+
+        WebClient client = WebClient.builder().baseUrl(Constantes.WEBPAY_URL2).build();
+
+        RequestModel requestModel = new RequestModel("ordenCompra54321", "sesion1234557545", 5000, "http://localhost:8080/respuesta");
+
+        Mono<CrearTokenModel> res = client.post().uri(Constantes.WEBPAY_URI).bodyValue(requestModel)
+                    .headers(httpheader -> {httpheader.set("Tbk-Api-Key-Id", Constantes.WEBPAY_CODIGO_COMERCIO);
+                                            httpheader.set("Tbk-Api-Key-Secret", Constantes.WEBPAY_CODIGO_SECRETO);
+                                            httpheader.setContentType(MediaType.APPLICATION_JSON);})
+                    .retrieve().bodyToMono(CrearTokenModel.class);
+
+
+        System.out.println("url= "+res.block().getUrl());
+        System.out.println("token= "+res.block().getToken());
+        model.addAttribute("response", res.block());
         return "pagar";
     }
 
@@ -67,4 +85,5 @@ public class HomeController {
         model.addAttribute("token_ws", token_ws);
         return "respuesta";
     }
+
 }
