@@ -68,6 +68,9 @@ public class HomeController {
 
     @GetMapping("respuesta")
     public String respuesta(Model model, @RequestParam("token_ws") String token_ws) {
+       /* 
+        System.out.println("metodo= "+Constantes.WEBPAY_URL+"/"+token_ws);
+       
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
 
@@ -81,7 +84,22 @@ public class HomeController {
         ResponseEntity<ResponseModel> response = restTemplate.exchange(Constantes.WEBPAY_URL+"/"+token_ws, HttpMethod.PUT, entity, ResponseModel.class);
 
         ResponseModel respuesta = response.getBody();
+
         model.addAttribute("respuesta", respuesta);
+        
+*/
+        
+        WebClient client = WebClient.builder().baseUrl(Constantes.WEBPAY_URL2).build();
+
+        System.out.println("url = "+Constantes.WEBPAY_URL2 + Constantes.WEBPAY_URI + "/" + token_ws);
+        Mono<ResponseModel> respuesta = client.put().uri(Constantes.WEBPAY_URI+"/"+token_ws)
+                                .headers(httpheader -> {httpheader.set("Tbk-Api-Key-Id", Constantes.WEBPAY_CODIGO_COMERCIO);
+                                                        httpheader.set("Tbk-Api-Key-Secret", Constantes.WEBPAY_CODIGO_SECRETO);
+                                                        httpheader.setContentType(MediaType.APPLICATION_JSON);})
+                                .retrieve().bodyToMono(ResponseModel.class);
+
+        model.addAttribute("respuesta", respuesta.block());
+        
         model.addAttribute("token_ws", token_ws);
         return "respuesta";
     }
